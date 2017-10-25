@@ -90,6 +90,8 @@ void *player1 (void *arg) {
 		}
 
 		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
+		getchar();
 
 		int tmp1 = 0;
 		for (i = 0; i < 16; i++) {
@@ -102,20 +104,16 @@ void *player1 (void *arg) {
 		}
 
 		if (score[0] >= 10) {
-			winner = 0;
+			winner = 1;
 			break;
 		} else if (score[1] >= 10) {
-			winner = 1;
+			winner = 2;
 			break;
 		} else if (tmp1 == 16 && tmp2 == 16) {
 			winner = 3;
 			break;
 		}
 
-		printf("\nwinner: %d\n", winner);
-		getchar();
-		getchar();
-		
 		system("clear");
 		printf("-= SCORE =-\n");
 		printf("\n%s: %d\n", player[0], score[0]);
@@ -191,6 +189,8 @@ void *player2 (void *arg) {
 		}
 
 		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
+		getchar();
 
 		int tmp1 = 0;
 		for (i = 0; i < 16; i++) {
@@ -203,19 +203,15 @@ void *player2 (void *arg) {
 		}
 
 		if (score[0] >= 10) {
-			winner = 0;
+			winner = 1;
 			break;
 		} else if (score[1] >= 10) {
-			winner = 1;
+			winner = 2;
 			break;
 		} else if (tmp1 == 16 && tmp2 == 16) {
 			winner = 3;
 			break;
 		}
-
-		printf("\nwinner: %d\n", winner);
-		getchar();
-		getchar();
 
 		system("clear");
 		printf("-= SCORE =-\n");
@@ -247,6 +243,9 @@ int main() {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("Player 1 win.\n");
+			printf("\n* SCORE *\n");
+			printf("%s: %d\n", player[0], score[0]);
+			printf("%s: %d\n", player[1], score[1]);
 			getchar();
 
 			return 0;
@@ -254,6 +253,9 @@ int main() {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("Player 2 win.\n");
+			printf("\n* SCORE *\n");
+			printf("\n%s: %d\n", player[0], score[0]);
+			printf("%s: %d\n", player[1], score[1]);
 			getchar();
 
 			return 0;
@@ -261,6 +263,9 @@ int main() {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("DRAW!.\n");
+			printf("\n* SCORE *\n");
+			printf("%s: %d\n", player[0], score[0]);
+			printf("%s: %d\n", player[1], score[1]);
 			getchar();
 
 			return 0;
