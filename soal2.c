@@ -5,7 +5,7 @@
 
 char player[2][100];
 int lubang[2][16], score[2];
-int giliran = 0, winner = 0;
+int giliran = 0, winner = -1;
 
 int isilubang(int index_lubang, int player) {
 	if (index_lubang < 0 || index_lubang > 15) {
@@ -41,25 +41,34 @@ void *player1 (void *arg) {
 		for (i = 0; i < 16; i++) {
 			if (lubang[0][i]) printf("%d ", i+1);
 		}
-		printf("\n\nBerapa jumlah lubang yg akan diisi ranjau? (Maksimal 4) ");
-		scanf("%d", &jumlah_ranjau);
+		
 		int tmp = 0;
 		for (i = 0; i < 16; i++) {
 			tmp += lubang[0][i];
 		}
 
-		if ((jumlah_ranjau >= 0 && jumlah_ranjau <= 4) && jumlah_ranjau <= 16-tmp ) {
-			for (i = 0; i < jumlah_ranjau; i++) {
-				printf("\nMasukkan nomor lubang yg akan diisi lubang (1-16): ");
-				scanf("%d", &nomor_lubang);
-				if (!isilubang(nomor_lubang-1, 0)) {
-					printf("Input invalid!\n");
-					i--;
+		do {
+			printf("\nBerapa jumlah lubang yg akan diisi ranjau? (Maksimal 4) ");
+			scanf("%d", &jumlah_ranjau);
+			if ((jumlah_ranjau >= 0 && jumlah_ranjau <= 4) && jumlah_ranjau <= 16-tmp ) {
+				for (i = 0; i < jumlah_ranjau; i++) {
+					printf("\nMasukkan nomor lubang yg akan diisi lubang (1-16): ");
+					scanf("%d", &nomor_lubang);
+					if (!isilubang(nomor_lubang-1, 0)) {
+						printf("Input invalid!\n");
+						i--;
+					}
 				}
+
+				break;
+			} else {
+				printf("Input invalid!\n");
 			}
-		} else {
-			printf("Input invalid!\n");
-		}
+		} while (1);
+
+		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
+		getchar();
 
 		system("clear");
 		printf("\n-= Giliran %s menebak lubang yg tidak berisi ranjau. =-\n", player[1]);
@@ -80,6 +89,8 @@ void *player1 (void *arg) {
 			}
 		}
 
+		printf("\nTekan enter untuk melanjutkan.\n");
+
 		int tmp1 = 0;
 		for (i = 0; i < 16; i++) {
 			tmp1 += lubang[0][i];
@@ -100,6 +111,17 @@ void *player1 (void *arg) {
 			winner = 3;
 			break;
 		}
+
+		printf("\nwinner: %d\n", winner);
+		getchar();
+		getchar();
+		
+		system("clear");
+		printf("-= SCORE =-\n");
+		printf("\n%s: %d\n", player[0], score[0]);
+		printf("%s: %d\n", player[1], score[1]);
+		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
 
 		giliran = 1;
 	}
@@ -120,25 +142,34 @@ void *player2 (void *arg) {
 		for (i = 0; i < 16; i++) {
 			if (lubang[1][i]) printf("%d ", i+1);
 		}
-		printf("\nBerapa jumlah lubang yg akan diisi ranjau? (Maksimal 4) ");
-		scanf("%d", &jumlah_ranjau);
+
 		int tmp = 0;
 		for (i = 0; i < 16; i++) {
 			tmp += lubang[0][i];
 		}
 
-		if ((jumlah_ranjau >= 0 && jumlah_ranjau <= 4) && jumlah_ranjau <= 16-tmp ) {
-			for (i = 0; i < jumlah_ranjau; i++) {
-				printf("\nMasukkan nomor lubang yg akan diisi lubang (1-16): ");
-				scanf("%d", &nomor_lubang);
-				if (!isilubang(nomor_lubang-1, 1)) {
-					printf("Input invalid!\n");
-					i--;
+		do {
+			printf("\nBerapa jumlah lubang yg akan diisi ranjau? (Maksimal 4) ");
+			scanf("%d", &jumlah_ranjau);
+			if ((jumlah_ranjau >= 0 && jumlah_ranjau <= 4) && jumlah_ranjau <= 16-tmp ) {
+				for (i = 0; i < jumlah_ranjau; i++) {
+					printf("\nMasukkan nomor lubang yg akan diisi lubang (1-16): ");
+					scanf("%d", &nomor_lubang);
+					if (!isilubang(nomor_lubang-1, 1)) {
+						printf("Input invalid!\n");
+						i--;
+					}
 				}
+
+				break;
+			} else {
+				printf("Input invalid!\n");
 			}
-		} else {
-			printf("Input invalid!\n");
-		}
+		} while(1);
+
+		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
+		getchar();
 
 		system("clear");
 		printf("\n\n-= Giliran %s menebak lubang yg tidak berisi ranjau. =-\n", player[0]);
@@ -158,6 +189,8 @@ void *player2 (void *arg) {
 				i--;
 			}
 		}
+
+		printf("\nTekan enter untuk melanjutkan.\n");
 
 		int tmp1 = 0;
 		for (i = 0; i < 16; i++) {
@@ -180,6 +213,17 @@ void *player2 (void *arg) {
 			break;
 		}
 
+		printf("\nwinner: %d\n", winner);
+		getchar();
+		getchar();
+
+		system("clear");
+		printf("-= SCORE =-\n");
+		printf("\n%s: %d\n", player[0], score[0]);
+		printf("%s: %d\n", player[1], score[1]);
+		printf("\nTekan enter untuk melanjutkan.\n");
+		getchar();
+
 		giliran = 0;
 	}
 }
@@ -198,27 +242,27 @@ int main() {
 	pthread_create(&(tid[0]), NULL, &player1, NULL);
 	pthread_create(&(tid[1]), NULL, &player2, NULL);
 
-	pthread_join(tid[0], NULL);
-	pthread_join(tid[1], NULL);
-
 	while (1) {
 		if (winner == 1) {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("Player 1 win.\n");
 			getchar();
+
 			return 0;
 		} else if (winner == 2) {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("Player 2 win.\n");
 			getchar();
+
 			return 0;
 		} else if (winner == 3) {
 			system("clear");
 			printf("-= GAME OVER =-\n");
 			printf("DRAW!.\n");
 			getchar();
+
 			return 0;
 		}
 	}
