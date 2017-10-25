@@ -6,8 +6,21 @@
 char player[2][100];
 int lubang[2][16];
 
-void isilubang(int index_lubang, int player) {
-	lubang[player][index_lubang] = 1;
+int isilubang(int index_lubang, int player) {
+	if (index_lubang < 0 || index_lubang > 15) {
+		return 0;
+	} else {
+		lubang[player][index_lubang] = 1;
+		return 1;
+	}
+}
+
+void *player1 (void *arg) {
+
+}
+
+void *player2 (void *arg) {
+	
 }
 
 int main() {
