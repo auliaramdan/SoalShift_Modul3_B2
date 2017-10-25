@@ -15,12 +15,22 @@ int isilubang(int index_lubang, int player) {
 	}
 }
 
+int tebaklubang(int index_lubang, int player) {
+	if (index_lubang < 0 || index_lubang > 15) {
+		return 0;
+	} else if (lubang[player][index_lubang]) {
+		return 1;
+	}
+
+	return 0;
+}
+
 void *player1 (void *arg) {
 
 }
 
 void *player2 (void *arg) {
-	
+
 }
 
 int main() {
