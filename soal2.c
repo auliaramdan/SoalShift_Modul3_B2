@@ -17,13 +17,11 @@ int isilubang(int index_lubang, int player) {
 }
 
 int tebaklubang(int index_lubang, int player) {
-	if (index_lubang < 0 || index_lubang > 15) {
-		return 0;
-	} else if (!lubang[player][index_lubang]) {
+	if (!lubang[player][index_lubang]) {
 		return 1;
+	} else {
+		return 0;
 	}
-
-	return 0;
 }
 
 void *player1 (void *arg) {
@@ -61,14 +59,21 @@ void *player1 (void *arg) {
 	for (i = 0; i < 4; i++) {
 		printf("Tebakan ke-%d. Masukkan nomor lubang yg ditebak (1-16): ", i+1);
 		scanf("%d", nomor_lubang);
-		if (tebaklubang(nomor_lubang-1, 1)) {
-			printf("Benar!\n");
-			score[1]++;
+		if (nomor_lubang > 0 && nomor_lubang <= 16) {
+			if (tebaklubang(nomor_lubang-1, 0)) {
+				printf("Benar!\n");
+				score[1]++;
+			} else {
+				printf("Salah!\n");
+				score[0]++;
+			}
 		} else {
 			printf("Input invalid!\n");
 			i--;
 		}
 	}
+
+	giliran = 1;
 }
 
 void *player2 (void *arg) {
@@ -77,13 +82,50 @@ void *player2 (void *arg) {
 	}
 
 	system("clear");
-	printf("Giliran %s\n", player[0]);
 
-	int i;
-	printf("Lubang yg sudah diisi ranjau: ");
-	for (i = 0; i < 16; i++) {
-		if (lubang[1][i]) printf("%d ", i);
+	int i, jumlah_ranjau, nomor_lubang;
+
+	printf("\nGiliran %s mengisi ranjau.\n", player[1]);
+	printf("\nBerapa jumlah lubang yg akan diisi ranjau? (Maksimal 4) ");
+	scanf("%d", &jumlah_ranjau);
+	if (jumlah_ranjau >= 0 && jumlah_ranjau <= 4) {
+		printf("Lubang yg sudah diisi ranjau: ");
+		for (i = 0; i < 16; i++) {
+			if (lubang[1][i]) printf("%d ", i);
+		}
+
+		for (i = 0; i < jumlah_ranjau; i++) {
+			printf("Masukkan nomor lubang yg akan diisi lubang (1-16): ");
+			scanf("%d", &nomor_lubang);
+			if (!isilubang(nomor_lubang-1, 1)) {
+				printf("Input invalid!\n");
+				i--;
+			}
+		}
+	} else {
+		printf("Input invalid!\n");
 	}
+
+	system("clear");
+	printf("\nGiliran %s menebak lubang yg tidak berisi ranjau.\n", player[0]);
+	for (i = 0; i < 4; i++) {
+		printf("Tebakan ke-%d. Masukkan nomor lubang yg ditebak (1-16): ", i+1);
+		scanf("%d", nomor_lubang);
+		if (nomor_lubang > 0 && nomor_lubang <= 16) {
+			if (tebaklubang(nomor_lubang-1, 1)) {
+				printf("Benar!\n");
+				score[0]++;
+			} else {
+				printf("Salah!\n");
+				score[1]++;
+			}
+		} else {
+			printf("Input invalid!\n");
+			i--;
+		}
+	}
+
+	giliran = 0;
 }
 
 int main() {
