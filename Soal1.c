@@ -21,28 +21,27 @@ void modifyStock(char weap[7], int amount){
         else if(strcmp(weap, "SPG1-V3") ==0) total[4] += amount;
         else if(strcmp(weap, "MINE") ==0) total[5] += amount;
 }
-void *menu(){
+void menu(){
 	bool exit = false;
 	char stock[7];
 	int senjata[4];
 	int command, amount;
-	//int total[7];
-        //const char *weapon[7] = {"MP4A1", "PM2-V1", "SPR-3", "SS2-V5", "SPG1-V3", "MINE"};
 	while(!exit){
-		printf ("Menu:\n1. Lihat Stock\n2. Tambah Stock\n3. Exit\n");
+		printf ("Menu:\n1. Lihat Stock\n2. Tambah Stock\n3. Exit\nEnter: ");
 		scanf("%d", &command);
 		switch(command){
 		case 1:
-		printf("Stock senjata:\n");
+		printf("\nStock senjata:\n");
 		for(int i=0; i<6; i++){
-		printf("%s %d\n", weapon[i], total[i]);
+		if(total[i] > 0) printf("%s %d\n", weapon[i], total[i]);
 		}
+		printf("\n");
 		break;
 		case 2:
-		printf("Tambah senjata:\n");
+		printf("\nTambah senjata:\n");
 		scanf("%s %d", &stock, &amount);
 		modifyStock(stock, amount);
-		printf("Nota: %s %d\n", stock, amount);
+		printf("Nota: %s %d\n\n", stock, amount);
 		break;
 		case 3:
 		exit = true;
@@ -55,12 +54,11 @@ void *menu(){
 
 int main(){
 	key_t key = 123;
-	//int total[7];
-	//const char *weapon[7] = {"MP4A1", "PM2-V1", "SPR-3", "SS2-V5", "SPG1-V3", "MINE"};
 	int shmid = shmget(key, sizeof(int)*3, IPC_CREAT | 0666);
 	total = shmat(shmid, NULL, 0);
 	menu();
-
+	shmdt(total);
+	shmctl(shmid, IPC_RMID, NULL);
 return 0;
 }
 
