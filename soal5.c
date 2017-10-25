@@ -3,9 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-FILE *file;
-
 void *search(void *arg) {
+	FILE *file = fopen("Novel.txt", "r");
 	int res = 0;
 	char *kata = (char *) arg;
 	char word[1024];
@@ -18,10 +17,11 @@ void *search(void *arg) {
 	}
 
 	printf("%s : %d\n", kata, res);
+
+	fclose(file);
 }
 
 int main(int argc, char *argv[]) {
-	file = fopen("Novel.txt", "r");
 	pthread_t tid[argc-1];
 	int i;
 
@@ -32,8 +32,6 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < argc-1; i++) {
 		pthread_join(tid[i], NULL);
 	}
-
-	fclose(file);
 
 	return 0;
 }
