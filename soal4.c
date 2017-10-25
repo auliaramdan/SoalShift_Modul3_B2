@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 void *faktorial(void *arg) {
-	int num = (int *) arg;
+	int num = *((int *) arg);
 
 	int i;
 	long double res = 1;
