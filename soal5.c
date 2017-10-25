@@ -11,7 +11,10 @@ void *search(void *arg) {
 	char word[1024];
 
 	while (fscanf(file,"%s", word) != EOF) {
-		if (strcmp(word, kata) == 0) res++;
+		// if (strcmp(word, kata) == 0) res++;
+		if (strstr(word, kata) != NULL) {
+			res++;
+		}
 	}
 
 	printf("%s : %d\n", kata, res);
